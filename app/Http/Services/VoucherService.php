@@ -33,6 +33,10 @@ class VoucherService {
   {
     $customer = (new CustomerRepository())->getDataCustomerByEmail($email);
 
+    if(!$customer){
+      return false;
+    }
+
     return (new VoucherRepository())->getDataVoucherByCustomerId($customer->id);
   }
 }

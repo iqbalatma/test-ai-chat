@@ -21,11 +21,19 @@ class VoucherController extends Controller
     {
         $data = $service->getVoucherByCustomerEmail($email);
 
+        if($data){
+            return response()->json([
+                "message" => "Get data voucher by customer email successfully",
+                "status" => JsonResponse::HTTP_OK,
+                "error" => false,
+                "data" => $data
+            ]);
+        }
         return response()->json([
-            "message" => "",
-            "status" => JsonResponse::HTTP_OK,
-            "error" => false,
-            "data" => $data
+            "message" => "Get data voucher by customer email failed.",
+            "status" => JsonResponse::HTTP_NOT_FOUND,
+            "error" => true,
         ]);
+
     }
 }
