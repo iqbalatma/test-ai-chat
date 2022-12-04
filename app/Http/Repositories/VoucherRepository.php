@@ -5,7 +5,15 @@ use App\Models\Voucher;
 use Carbon\Carbon;
 
 class VoucherRepository{
+  
   public function getDataVoucherByCustomerId(int $customerId, array $columns = ["*"])
+  {
+    return Voucher::where([
+      "customer_id" => $customerId,
+      ])->first($columns);
+  }
+
+  public function getDataVoucherAvailableByCustomerId(int $customerId, array $columns = ["*"])
   {
     return Voucher::where([
       "customer_id" => $customerId,

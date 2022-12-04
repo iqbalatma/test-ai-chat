@@ -25,7 +25,7 @@ class UploadPhotoService {
     );
     $filename = basename($uploaded);
    
-    $voucher = (new VoucherRepository())->getDataVoucherByCustomerId($customer->id);
+    $voucher = (new VoucherRepository())->getDataVoucherAvailableByCustomerId($customer->id);
     if($voucher){
       $voucher->is_redeemed = true;
       $voucher->is_image_qualified = true;

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\V1\RedeemController;
 use App\Http\Controllers\API\V1\UploadPhotoController;
+use App\Http\Controllers\API\V1\VoucherController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -33,4 +34,11 @@ Route::controller(UploadPhotoController::class)
     ->name("upload.photo.")
     ->group(function (){
         Route::post("/", "upload")->name("upload");
+    });
+
+Route::controller(VoucherController::class)
+    ->prefix("/vouchers")
+    ->name("vouchers.")
+    ->group(function (){
+        Route::get("/{customerEmail}", "show")->name("show");
     });

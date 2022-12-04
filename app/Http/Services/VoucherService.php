@@ -1,6 +1,7 @@
 <?php 
 namespace App\Http\Services;
 
+use App\Http\Repositories\CustomerRepository;
 use App\Http\Repositories\VoucherRepository;
 use Carbon\Carbon;
 
@@ -26,6 +27,13 @@ class VoucherService {
         return false;
       }
     }
+  }
+
+  public function getVoucherByCustomerEmail(string $email)
+  {
+    $customer = (new CustomerRepository())->getDataCustomerByEmail($email);
+
+    return (new VoucherRepository())->getDataVoucherByCustomerId($customer->id);
   }
 }
 
