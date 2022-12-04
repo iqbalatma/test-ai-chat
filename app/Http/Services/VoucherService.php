@@ -6,7 +6,13 @@ use App\Http\Repositories\VoucherRepository;
 use Carbon\Carbon;
 
 class VoucherService {
-  public function isVoucherAvailable(object $customer)
+  /**
+   * Description : use to check and add voucher by customer
+   * 
+   * @param object $customer eloquent model
+   * @return bool
+   */
+  public function isVoucherAvailable(object $customer):bool
   {
     $voucherRepository = new VoucherRepository();
     $expiredVoucher = $voucherRepository->getDataExpiredLockTime();
@@ -29,7 +35,14 @@ class VoucherService {
     }
   }
 
-  public function getVoucherByCustomerEmail(string $email)
+
+  /**
+   * Description : use to get data voucher by customer email
+   * 
+   * @param string $email customer
+   * @return ?object of eloquent voucher
+   */
+  public function getVoucherByCustomerEmail(string $email):?object
   {
     $customer = (new CustomerRepository())->getDataCustomerByEmail($email);
 
