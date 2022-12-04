@@ -13,19 +13,20 @@ class RedeemController extends Controller
     public function redeem(RedeemService $service, Request $request, string $campaignCode):JsonResponse
     {
         $data = $service->redemVoucher($campaignCode, $request->all());
-        // if(!$data){
-        //     return response()->json([
-        //         "message" => "Access Denied. Invalid event or customer !",
-        //         "status" => JsonResponse::HTTP_FORBIDDEN,
-        //         "error" => true
-        //     ]);
-        // }
+        if(!$data){
+            return response()->json([
+                "message" => "Access Denied. Invalid event or customer does not allowed to redeem !",
+                "status" => JsonResponse::HTTP_FORBIDDEN,
+                "error" => true
+            ]);
+        }
 
         return response()->json([
             "message" => "Access Granted. Please submit your selfie photo to proceed this event !",
             "status" => JsonResponse::HTTP_OK,
             "error" => false,
-            "data"=>$data
+            "data"=>$data,
+            "now" => Carbon::now()
         ]);
     }
 }

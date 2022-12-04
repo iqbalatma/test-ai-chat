@@ -5,21 +5,33 @@ use App\Http\Repositories\CampaignRepository;
 use App\Http\Repositories\CustomerRepository;
 
 class RedeemService{
-  public function redemVoucher(string $campaignCode, array $requestedData)
-  {
-    $isCampaignValid = $this->isCampaignCodeValid($campaignCode);
 
-    if(!$isCampaignValid){
+  /**
+   * Description : use to redeem voucher
+   * 
+   * @param string $campaignCode 
+   * @param array $requestedData request from client
+   * return bool
+   */
+  public function redemVoucher(string $campaignCode, array $requestedData):bool
+  {
+    if(!$this->isCampaignCodeValid($campaignCode)){
       return false;
     }
 
-    $customer =  $this->isCustomerEligible($requestedData["email"]);
+    if(!$customer =  $this->isCustomerEligible($requestedData["email"])){
+      return false;
+    }
 
-
-    return $customer;
+    return (new VoucherService())->isVoucherAvailable($customer);
   }
 
-
+  /**
+   * Description : use to check is customer eligible or not
+   * 
+   * @param string $email of customer
+   * @return ?object of customer data that eligible
+   */
   private function isCustomerEligible(string $email):?object
   {
     return (new CustomerRepository())->getDataEligibleCustomerByEmail($email);

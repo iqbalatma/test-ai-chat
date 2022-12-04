@@ -11,12 +11,18 @@ class CustomerRepository{
   public function getDataEligibleCustomerByEmail(string $email, array $columns = ["*"])
   {
     return Customer::where("email", $email)
+      ->has("voucher", "=", 0)
       ->whereHas("purchase_transaction", function ($q){
         $q->whereBetween("transaction_at", [Carbon::now()->subDays(30),Carbon::now()]);
       }, ">=", self::TRANSACTION_THRESHOLD)
       ->withSum("purchase_transaction", "total_spent")
       ->having("purchase_transaction_sum_total_spent", ">=", self::SPENT_THRESHOLD)
       ->first($columns);
+  }
+
+  public function getDataCustomerByEmail(string $email, array $columns =["*"])
+  {
+    return Customer::where("email", $email)->first($columns);
   }
 }
 ?>

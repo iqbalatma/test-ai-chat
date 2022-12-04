@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\V1\RedeemController;
+use App\Http\Controllers\API\V1\UploadPhotoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,11 @@ Route::controller(RedeemController::class)
     ->name("redeem.")
     ->group(function (){
         Route::get("/{campaignCode}", "redeem")->name("index");
+    });
+
+Route::controller(UploadPhotoController::class)
+    ->prefix("/upload-photo")
+    ->name("upload.photo.")
+    ->group(function (){
+        Route::post("/", "upload")->name("upload");
     });
