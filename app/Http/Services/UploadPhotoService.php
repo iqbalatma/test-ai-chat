@@ -3,6 +3,8 @@ namespace App\Http\Services;
 
 use App\Http\Repositories\CustomerRepository;
 use App\Http\Repositories\VoucherRepository;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UploadPhotoService {
   public function storeNewData(array $requestedData)
@@ -13,11 +15,27 @@ class UploadPhotoService {
       return false;
     }
 
-    $newData = [
-      "is_redeemed" => 1,
-      "is_image_qualified" => 1
-    ];
-    return (new VoucherRepository())->updateDataVoucherByCustomerId($customer->id, $newData);
+    if(!(new FaceRecognitionService())->checkFaceIsValid(request()->file("image"))){
+      return false;
+    }
+
+    $uploaded = Storage::putFile(
+      'public/images',
+      request()->file('image')
+    );
+    $filename = basename($uploaded);
+   
+    $voucher = (new VoucherRepository())->getDataVoucherByCustomerId($customer->id);
+    if($voucher){
+      $voucher->is_redeemed = true;
+      $voucher->is_image_qualified = true;
+      $voucher->image = $filename;
+      $voucher->save();
+
+      return $voucher;
+    }
+
+    return false;
   }
 }
 

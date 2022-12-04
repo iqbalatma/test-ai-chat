@@ -5,6 +5,13 @@ use App\Models\Voucher;
 use Carbon\Carbon;
 
 class VoucherRepository{
+  public function getDataVoucherByCustomerId(int $customerId, array $columns = ["*"])
+  {
+    return Voucher::where([
+      "customer_id" => $customerId,
+      "is_redeemed" => false
+      ])->first($columns);
+  }
   public function updateDataVoucherByCustomerId(int $customerId, array $requestedData)
   {
     return Voucher::where("customer_id", $customerId)->update($requestedData);
