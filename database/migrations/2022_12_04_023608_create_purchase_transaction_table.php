@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreatePurchaseTransactionTable extends Migration
@@ -18,7 +19,7 @@ class CreatePurchaseTransactionTable extends Migration
             $table->unsignedBigInteger("customer_id");
             $table->decimal("total_spent", 10,2);
             $table->decimal("total_saving", 10, 2);
-            $table->timestamp("transaction_at");
+            $table->timestamp("transaction_at")->default(DB::raw("CURRENT_TIMESTAMP"));
         });
     }
 
