@@ -12,4 +12,9 @@ class Voucher extends Model
     protected $fillable = [
         "campaign_id", "customer_id", "code", "image", "is_image_qualified", "is_redeemed", "lock_time"
     ];
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }
